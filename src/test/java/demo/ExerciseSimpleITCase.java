@@ -4,21 +4,13 @@ package demo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import org.junit.Test;
 
 public class ExerciseSimpleITCase {
   public static Long id = 99999L;
-  public Comparator<String> c = new Comparator<String>() {
-    @Override
-    public int compare(String s1, String s2) {
-      return s1.compareTo(s2);
-      // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
-      // return lhs.customInt > rhs.customInt ? -1 : (lhs.customInt < rhs.customInt) ? 1 : 0;
-    }
-  };
+
   public static int limit = 100000;
   public static int[] bigArrayOfInt = new int[limit];
   static {
@@ -27,14 +19,57 @@ public class ExerciseSimpleITCase {
     }
   }
 
+
+  @Test
+  public void ivTest() {
+    int result = 0, i = 1000000;
+    while (i >= 1) {
+      i /= 2;
+      result++;
+    }
+    System.out.println("** result " + result);
+  }
+
+  @Test
+  public void countDivisibleTest() {
+    assertEquals(3, countDivisible(6, 11, 2));
+    assertEquals(20, countDivisible(11, 345, 17));
+    assertEquals(1, countDivisible(0, 0, 11));
+    assertEquals(0, countDivisible(1, 1, 11));
+    assertEquals(1, countDivisible(10, 10, 5));
+    assertEquals(0, countDivisible(10, 10, 7));
+    assertEquals(0, countDivisible(10, 10, 20));
+    assertEquals(1, countDivisible(10, Integer.MAX_VALUE, Integer.MAX_VALUE));
+    assertEquals(12345, countDivisible(101, 123456789, 10000));
+
+  }
+
+  public int countDivisible(int A, int B, int K) {
+    return (B / K) - (A / K) + (A % K == 0 ? 1 : 0);
+  }
+
   @Test
   public void passingCarsTest() {
     assertEquals(5, passingCars(new int[] {0, 1, 0, 1, 1}));
   }
 
   public int passingCars(int[] A) {
+    int result = 0, eastbound = 0;
+    for (int i : A) {
+      if (i == 0) {
+        eastbound++;
+      }
+      if (eastbound > 0) {
+        if (i == 1) {
+          result += eastbound;
+          if (result > 1000000000) {
+            return -1;
+          }
+        }
+      }
+    }
 
-    return -1;
+    return result;
   }
 
   @Test
